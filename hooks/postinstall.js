@@ -11,7 +11,7 @@ ProcessManager.execute([
     printStdout: false, printStderr: false
   },
   {
-    command: 'mkdir '+process.env.HOME+'/.wk/extensions',
+    command: 'mkdir '+process.env.HOME+'/.wk/tasks',
     printStdout: false, printStderr: false
   }
 ]).then(function(results) {
