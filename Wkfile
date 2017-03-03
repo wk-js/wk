@@ -1,7 +1,5 @@
 'use strict'
 
-wk.task('helloworld')
-
 const publishTask = wk.extra('publish-task')
 const packageTask = wk.extra('package-task')
 
