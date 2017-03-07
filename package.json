@@ -7,7 +7,7 @@
     "wk": "./bin/cli.js"
   },
   "scripts": {
-    "postinstall": "node ./hooks/postinstall.js"
+    "postinstall": "hooks/postinstall.js"
   },
   "author": "FuriouZz",
   "license": "ISC",
