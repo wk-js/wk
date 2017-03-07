@@ -168,7 +168,7 @@ if (wk.COMMAND_ARGV.length > 0) {
     if (tsk.match(/\s/g)) {
       argv = ARGParser._softParse(tsk.split(' '))
       tsk  = argv._[0]
-    } else if (wk.Tasks[tsk]) {
+    } else if (wk.Tasks[tsk] && !wk.CONTEXT_PARAMS.multiple) {
       singleTask = true
     }
 
