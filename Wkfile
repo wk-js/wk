@@ -1,7 +1,8 @@
 'use strict'
 
-const publishTask = wk.extra('publish-task')
+// const publishTask = wk.extra('publish-task')
 const packageTask = wk.extra('package-task')
+const releaseTask = wk.extra('release-task')
 
 namespace('test', function() {
   task('default', [ 'test:api', 'test:task', 'test:hook' ])
@@ -35,16 +36,7 @@ packageTask('pkg', function() {
 
 })
 
-
-// publishTask('deploy', function() {
-//   this.remote = 'origin'
-// })
-
-
-const publishT = wk.extra('publish-task2')
-
-publishT('deploy', function() {
-
+releaseTask('deploy', function() {
   this.remote = 'origin'
-
+  this.debug  = true
 })
