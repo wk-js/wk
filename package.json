@@ -6,9 +6,7 @@
   "bin": {
     "wk": "./bin/cli.js"
   },
-  "scripts": {
-    "postinstall": "hooks/postinstall.js"
-  },
+  "scripts": {},
   "author": "FuriouZz",
   "license": "ISC",
   "dependencies": {
