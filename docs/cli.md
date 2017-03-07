@@ -30,7 +30,7 @@ wk message:hello
 
 To execute multiple tasks
 
-wk "mytask0" "mytask1"
+wk -m mytask0 mytask1
 
 **[Deprecated]** To execute multiple tasks you can use `run` task.
 
@@ -53,6 +53,13 @@ To execute multiple tasks with arguments.
 ```sh
 wk 'mytask0 --message="Hello World"' 'mytask1 --message="Surprise"'
 ```
+
+or
+
+```sh
+wk -m 'mytask0 --message="Hello World"' 'mytask1 --message="Surprise"'
+```
+
 
 **[Deprecated]** To execute multiple tasks with arguments, use `run` task.
 
