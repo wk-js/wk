@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-const wk        = require('./../lib/workflow.js')
+const fs = require('fs')
+const path = require('path')
+const wk = require('./../lib/workflow.js')
 
-const ARGParser  = require('./../lib/arg-parser')
+const ARGParser = require('./../lib/arg-parser')
 const ARGConfig = require('./../lib/config/parameters')
 
 ARGParser._createHelp( ARGConfig )
@@ -15,7 +17,8 @@ wk.COMMAND_ARGV   = ARGV.command
 wk.COMMAND_PARAMS = ARGParser.parse(wk.COMMAND_ARGV)
 
 // Load Wkfile
-wk.load(wk.CONTEXT_PARAMS.file)
+const Wkfile_path = path.isAbsolute(wk.CONTEXT_PARAMS.file) ? wk.CONTEXT_PARAMS.file : path.join(process.cwd(), wk.CONTEXT_PARAMS.file)
+if (fs.existsSync(Wkfile_path)) require(Wkfile_path)
 
 // Prepare command execution
 const Print          = require('./../lib/print')
