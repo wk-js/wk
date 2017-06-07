@@ -5,15 +5,15 @@
 ```
 wk --help
 
-    --sequence --seq -s (serie|parallel)    Execute tasks in "serie" or "parallel"
-    --parallel -p                           Execute tasks in "parallel"
     --verbose                               Display verbose log
     --silent                                Hide logs
     --log <string>                          Precise log levels (eg.: --log=log,warn,error)
-    --help -h                               Help?
     --clean --kill                          Kill all processes referenced inside tmp/pids
+    --help -h                               Help?
     --tasks -T                              List available tasks
     --file -F <string>                      Precise a default file
+    --parallel -p                           Execute tasks in parallel
+    --multiple -m                           Run multiple tasks
 ```
 
 ## Execute task
@@ -30,7 +30,9 @@ wk message:hello
 
 To execute multiple tasks
 
-wk "mytask0" "mytask1"
+```sh
+wk -m mytask0 mytask1
+```
 
 **[Deprecated]** To execute multiple tasks you can use `run` task.
 
@@ -51,8 +53,9 @@ ENV=staging wk --verbose mytask --message="Hello World"
 To execute multiple tasks with arguments.
 
 ```sh
-wk 'mytask0 --message="Hello World"' 'mytask1 --message="Surprise"'
+wk -m 'mytask0 --message="Hello World"' 'mytask1 --message="Surprise"'
 ```
+
 
 **[Deprecated]** To execute multiple tasks with arguments, use `run` task.
 
