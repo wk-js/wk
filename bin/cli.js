@@ -148,14 +148,14 @@ else {
 // Execute a command
 if (wk.COMMAND_ARGV.length > 0) {
 
-  if (wk.COMMAND_ARGV[0] === 'run') {
-    const print = Print.new()
-    print.warn('"wk run" is deprecated.')
-    createCommands()
-    wk.Tasks['run'].argv = Object.assign(wk.Tasks['run'].argv, wk.COMMAND_PARAMS.__)
-    wk.run('run')
-    return
-  }
+  // if (wk.COMMAND_ARGV[0] === 'run') {
+  //   const print = Print.new()
+  //   print.warn('"wk run" is deprecated.')
+  //   createCommands()
+  //   wk.Tasks['run'].argv = Object.assign(wk.Tasks['run'].argv, wk.COMMAND_PARAMS.__)
+  //   wk.run('run')
+  //   return
+  // }
 
   const tasks = []
   let singleTask = false

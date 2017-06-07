@@ -3,6 +3,7 @@
 // const publishTask = wk.extra('publish-task')
 const packageTask = wk.extra('package-task')
 const releaseTask = wk.extra('release-task')
+const commandTask = wk.extra('command-task2')
 
 namespace('test', function() {
   task('default', [ 'test:api', 'test:task', 'test:hook' ])
@@ -38,5 +39,5 @@ packageTask('pkg', function() {
 
 releaseTask('deploy', function() {
   this.remote = 'origin'
-  this.debug  = true
+  this.debug  = false
 })
