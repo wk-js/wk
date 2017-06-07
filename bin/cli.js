@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-const fs = require('fs')
 const path = require('path')
-const wk = require('./../lib/workflow.js')
+const wk   = require('./../lib/workflow.js')
 
 const ARGParser = require('./../lib/arg-parser')
 const ARGConfig = require('./../lib/config/parameters')
@@ -18,7 +17,9 @@ wk.COMMAND_PARAMS = ARGParser.parse(wk.COMMAND_ARGV)
 
 // Load Wkfile
 const Wkfile_path = path.isAbsolute(wk.CONTEXT_PARAMS.file) ? wk.CONTEXT_PARAMS.file : path.join(process.cwd(), wk.CONTEXT_PARAMS.file)
-if (fs.existsSync(Wkfile_path)) require(Wkfile_path)
+try {
+  require(Wkfile_path)
+} catch(e) {}
 
 // Prepare command execution
 const Print          = require('./../lib/print')
@@ -70,41 +71,6 @@ const listTasks = function() {
 
 }
 
-
-const createCommands = function() {
-  const commandTask = require('../lib/extras/command-task')
-
-  commandTask('run', function() {
-
-    this.config['parallel'] = {
-      type: 'boolean',
-      default: false,
-      aliases: [ 'p' ],
-      description: 'Execute tasks in "parallel"'
-    }
-
-    wk.ARGParser._createHelp( this.config )
-
-    const config = this.config
-
-    task('command', { visible: false, async: true }, function() {
-      const tasks = Array.from(arguments)
-
-      if (this.argv.help || !tasks) {
-        console.log( config.help.description )
-        return this.complete()
-      }
-
-      if (this.argv.parallel) {
-        parallel(tasks).catch(this.fail).then(this.complete)
-      } else {
-        serie(tasks).catch(this.fail).then(this.complete)
-      }
-    })
-
-  })
-}
-
 /**
  * Execute command
  */
@@ -150,15 +116,6 @@ else {
 
 // Execute a command
 if (wk.COMMAND_ARGV.length > 0) {
-
-  // if (wk.COMMAND_ARGV[0] === 'run') {
-  //   const print = Print.new()
-  //   print.warn('"wk run" is deprecated.')
-  //   createCommands()
-  //   wk.Tasks['run'].argv = Object.assign(wk.Tasks['run'].argv, wk.COMMAND_PARAMS.__)
-  //   wk.run('run')
-  //   return
-  // }
 
   const tasks = []
   let singleTask = false

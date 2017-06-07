@@ -16,7 +16,7 @@ commandTask('run', function() {
   const scope  = this
   const config = this.config
 
-  task('default', function() {
+  task('default', { async: true }, function() {
 
     const params = scope.getParameters()
 
@@ -28,14 +28,22 @@ commandTask('run', function() {
       return this.complete()
     }
 
+    let cmd
+
     if (this.argv.parallel) {
-      parallel(tasks).catch(this.fail).then(this.complete)
+      cmd = wk.exec({
+        command: `wk -p -m ${tasks.join(' ')}`
+      })
     } else {
-      serie(tasks).catch(this.fail).then(this.complete)
+      cmd = wk.exec({
+        command: `wk -m ${tasks.join(' ')}`
+      })
     }
+
+    cmd.catch(this.fail).then(this.complete)
+
+    return cmd
 
   })
 
 })
-
-console.log('lol')
