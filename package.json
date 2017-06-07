@@ -4,7 +4,8 @@
   "description": "Task runner inspired by Jake.js",
   "main": "lib/workflow.js",
   "bin": {
-    "wk": "./bin/cli.js"
+    "wk": "./bin/wk.js",
+    "wk-run": "./bin/wk-run.js"
   },
   "scripts": {},
   "author": "FuriouZz",
