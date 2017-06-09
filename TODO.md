@@ -10,3 +10,4 @@
 * [ ] [Enhancement] Add possibility to create custom CLI from set of tasks
 * [ ] [API] Review API exposure
 * [ ] [API] Add test units
+* [ ] [API] Test performance
