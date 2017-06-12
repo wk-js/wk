@@ -2,7 +2,8 @@
 
 * [ ] [Export] `lib/print.js`
 * [ ] [Export] `lib/arg-parser.js`
-* [ ] [Task] Execute task many times without `Task#reenable()` or `always_run` option.
+* [x] [Task] Execute task many times without `Task#reenable()` or `always_run` option.
+* [ ] [Task] Enhance argv access
 * [ ] [ExtraTask] Rework
 * [ ] [ProcessExec] Remove `pid` file
 * [ ] [CLI] More simple
