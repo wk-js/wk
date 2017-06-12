@@ -4,9 +4,10 @@
 * [ ] [Export] `lib/arg-parser.js`
 * [x] [Task] Execute task many times without `Task#reenable()` or `always_run` option.
 * [ ] [Task] Enhance argv access
-* [ ] [ExtraTask] Rework
+* [x] [ExtraTask] Rework
+* [ ] [ExtraTask] Export?
 * [ ] [ProcessExec] Remove `pid` file
-* [ ] [CLI] More simple
+* [ ] [CLI] Clean `wk-run` things
 * [ ] [CLI] Create `wk-run`
 * [ ] [Enhancement] Add possibility to create custom CLI from set of tasks
 * [ ] [API] Review API exposure
