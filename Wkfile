@@ -11,31 +11,35 @@ namespace('test', function() {
 })
 
 
-packageTask('pkg', function() {
+// packageTask('pkg', function() {
 
-  const version = require('./package.json').version
-  this.name = `workflow-cli-${version}`
+//   const version = require('./package.json').version
+//   this.name = `workflow-cli-${version}`
 
-  this.filelist.include('./bin/**/*')
-  this.filelist.include('./lib/**/*')
-  this.filelist.include('./test/**/*')
-  this.filelist.include('./package.json')
-  this.filelist.include('./Wkfile')
-  this.filelist.include('./README.md')
+//   this.filelist.include('./bin/**/*')
+//   this.filelist.include('./lib/**/*')
+//   this.filelist.include('./test/**/*')
+//   this.filelist.include('./package.json')
+//   this.filelist.include('./Wkfile')
+//   this.filelist.include('./README.md')
 
-  this.targets = [ 'gzip' ]
+//   this.targets = [ 'gzip' ]
 
-  const self = this
+//   const self = this
 
-  task('publish', { async: true, visible: true }, function() {
-    wk.exec(`npm publish ${self.getPackagePath()}.tar.gz`)
-      .catch(this.fail)
-      .done(this.complete)
-  })
+//   task('publish', { async: true, visible: true }, function() {
+//     wk.exec(`npm publish ${self.getPackagePath()}.tar.gz`)
+//       .catch(this.fail)
+//       .done(this.complete)
+//   })
 
-})
+// })
 
 
-publishTask('deploy', function() {
-  this.remote = 'origin'
+// publishTask('deploy', function() {
+//   this.remote = 'origin'
+// })
+
+task('hello', function() {
+  console.log('Hello World !')
 })
