@@ -2,18 +2,23 @@
 
 'use strict'
 
-const path      = require('path')
-const fs        = require('fs')
-const ARGParser = require('wk-argparser')
-const wk        = require('./../lib/workflow.js')
+const path = require('path')
+const fs   = require('fs')
 
+const WKArg      = require('wk-argparser')
+const ARGParser  = WKArg.Parser
+const ARGCommand = WKArg.Command
+
+const wk = require('./../lib/workflow.js')
 
 const argv = process.argv.slice(2)
 const cli  = path.basename(process.argv[1])
 argv.unshift(cli)
 
-const WKCmd = ARGParser
-.command(cli)
+const parser = new ARGParser
+wk.ARGParser = parser
+
+const WKCmd = (new ARGCommand(cli, parser))
 
 .option('plouc', {
   no_key: true,
@@ -68,8 +73,13 @@ const WKCmd = ARGParser
   description: 'Run multiple tasks'
 })
 
-const WKArgv  = WKCmd.parse(argv)
-const options = WKArgv.valid_params
+const ContextArgv = ARGParser.getContextArgv(argv)
+const TaskArgv    = argv.filter((str) => {
+  return ContextArgv.indexOf(str) === -1
+})
+
+const ContextObject  = WKCmd.parse(ContextArgv)
+const options = ContextObject.params
 
 // Load Wkfile
 const Wkfile_path = path.isAbsolute(options.file) ? options.file : path.join(process.cwd(), options.file)
@@ -155,12 +165,11 @@ else {
   }
 }
 
-const TaskARGV = ARGParser.split(argv.join(' ').replace(WKArgv.arg_str, '')).slice(1)
-
-if (TaskARGV.length > 0) {
-  const tsk = TaskARGV[0]
+if (TaskArgv.length > 0) {
+  const tsk = TaskArgv[0]
 
   if (wk.Tasks[tsk]) {
+    wk.Tasks[tsk].argv.set(parser.parse(TaskArgv).params)
     wk.Tasks[tsk].invoke()
   }
 
