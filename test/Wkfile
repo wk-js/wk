@@ -47,16 +47,19 @@ task('parallel0', [ 'task_sync', 'task_async', 'task_sync_async' ], { preReqSequ
   return this.path+':complete'
 })
 
-task('task_param', function( name ) {
-  const res = "Hello "+name+"!"
+task('task_param', function( params ) {
+  const res = "Hello "+params._[1]+"!"
   if (process.argv.indexOf('task_param') !== -1) {
     console.log(res)
   }
   return res
 })
 
-task('task_param2', function() {
-  const res = "Hello "+this.argv.task_param2._[0]+"!"
+task('task_param2', function(params) {
+  const res = "Hello "+params._[1]+"!"
+
+  console.log(this.argv)
+
   if (process.argv.indexOf('task_param2') !== -1) {
     console.log(res)
   }
