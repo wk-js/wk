@@ -1,7 +1,7 @@
 
 const wk = require('../lib/workflow')
 
-wk.Print.silent()
+wk.Print.verbose()
 
 task('hello', { argv: { name: 'John' } }, function() {
   console.log( 'Hello', this.argv.name, '!' )

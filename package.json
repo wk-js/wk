@@ -17,7 +17,8 @@
     "sanitize-filename": "^1.6.0",
     "semver": "^5.3.0",
     "when": "^3.7.7",
-    "argparser": "wk-js/wk-argparser"
+    "wk-argparser": "wk-js/wk-argparser",
+    "wk-print": "../wk-js/print"
   },
   "devDependencies": {
     "eslint": "^3.5.0",
