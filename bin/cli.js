@@ -5,20 +5,16 @@
 const path = require('path')
 const fs   = require('fs')
 
-const WKArg      = require('wk-argparser')
-const ARGParser  = WKArg.Parser
-const ARGCommand = WKArg.Command
-
 const wk = require('./../lib/workflow.js')
 
 const argv = process.argv.slice(2)
 const cli  = path.basename(process.argv[1])
 argv.unshift(cli)
 
-const parser = new ARGParser
-wk.ARGParser = parser
+const parser = wk.ARGParser
+const WKCmd  = parser
 
-const WKCmd = (new ARGCommand(cli, parser))
+.command(cli)
 
 .option('plouc', {
   no_key: true,
@@ -73,12 +69,14 @@ const WKCmd = (new ARGCommand(cli, parser))
   description: 'Run multiple tasks'
 })
 
-const ContextArgv = ARGParser.getContextArgv(argv)
+const ContextArgv = wk.ARGParser.getClass().getContextArgv(argv)
 const TaskArgv    = argv.filter((str) => {
   return ContextArgv.indexOf(str) === -1
 })
 
-const ContextObject  = WKCmd.parse(ContextArgv)
+const ContextObject  = WKCmd.parse(ContextArgv, true)
+ContextObject.strict = true
+
 const options = ContextObject.params
 
 // Load Wkfile

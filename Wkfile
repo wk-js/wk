@@ -40,8 +40,8 @@ namespace('test', function() {
 //   this.remote = 'origin'
 // })
 
-const tsk = task('hello', { argv: { who: 'Marc' } }, function(params) {
-  console.log(this.argv.params.who, ':', this.argv.params.message)
+const tsk = task('hello', { argv: { who: 'Marc' }, argv_config: true }, function(params) {
+  console.log(params.who, ':', params.message)
 })
 
 tsk.argv_config
