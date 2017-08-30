@@ -1,14 +1,7 @@
 'use strict'
 
-// const publishTask = wk.require.extra('publish-task')
+const publishTask = wk.require.extra('publish-task')
 const packageTask = wk.require.extra('package-task')
-
-// namespace('test', function() {
-//   task('default', [ 'test:api', 'test:task', 'test:hook' ])
-
-//   taskProcess('api' , 'mocha test/api.js --color' , { async: true, visible: false })
-//   taskProcess('task', 'mocha test/task.js --color', { async: true, visible: false })
-// })
 
 packageTask('pkg', function() {
 
@@ -35,19 +28,6 @@ packageTask('pkg', function() {
 })
 
 
-// publishTask('deploy', function() {
-//   this.remote = 'origin'
-// })
-
-// const tsk = task('hello', { argv: { who: 'Marc' }, argv_config: true }, function(params) {
-//   console.log(params.who, ':', params.message)
-// })
-
-// tsk.argv_config
-// .option('who', {
-//   defaultValue: 'John'
-// })
-// .index('who', 1)
-// .option('message', {
-//   defaultValue: 'Hello World'
-// })
+publishTask('deploy', function() {
+  this.remote = 'origin'
+})
