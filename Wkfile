@@ -28,6 +28,6 @@ packageTask('pkg', function() {
 })
 
 
-publishTask('deploy', function() {
+publishTask('release', function() {
   this.remote = 'origin'
 })
