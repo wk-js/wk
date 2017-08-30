@@ -180,8 +180,7 @@ else {
 }
 
 if (TaskArgv.length > 0) {
-  options.parallel ?
-  parallel.apply(null, TaskArgv) : serie.apply(null, TaskArgv)
+  wk.run(TaskArgv.join(' '))
   return
 }
 

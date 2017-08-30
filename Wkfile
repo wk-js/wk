@@ -35,9 +35,9 @@ packageTask('pkg', function() {
 })
 
 
-publishTask('deploy', function() {
-  this.remote = 'origin'
-})
+// publishTask('deploy', function() {
+//   this.remote = 'origin'
+// })
 
 // const tsk = task('hello', { argv: { who: 'Marc' }, argv_config: true }, function(params) {
 //   console.log(params.who, ':', params.message)
@@ -50,24 +50,4 @@ publishTask('deploy', function() {
 // .index('who', 1)
 // .option('message', {
 //   defaultValue: 'Hello World'
-// })
-
-
-// task('message', function() {
-//   console.log('message')
-// })
-
-// task('message0', { async: true }, function() {
-//   setTimeout(() => {
-//     console.log('message0')
-//     this.complete()
-//   }, 1000)
-// })
-
-// task('message1', function(params) {
-//   console.log(`message1 ${params.name}`)
-// })
-
-// task('message2', function() {
-//   console.log('message2')
 // })
