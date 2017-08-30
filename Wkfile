@@ -1,54 +1,73 @@
 'use strict'
 
-const publishTask = wk.extra('publish-task')
-const packageTask = wk.extra('package-task')
+// const publishTask = wk.require.extra('publish-task')
+const packageTask = wk.require.extra('package-task')
 
-namespace('test', function() {
-  task('default', [ 'test:api', 'test:task', 'test:hook' ])
+// namespace('test', function() {
+//   task('default', [ 'test:api', 'test:task', 'test:hook' ])
 
-  taskProcess('api' , 'mocha test/api.js --color' , { async: true, visible: false })
-  taskProcess('task', 'mocha test/task.js --color', { async: true, visible: false })
+//   taskProcess('api' , 'mocha test/api.js --color' , { async: true, visible: false })
+//   taskProcess('task', 'mocha test/task.js --color', { async: true, visible: false })
+// })
+
+packageTask('pkg', function() {
+
+  const version = require('./package.json').version
+  this.name = `workflow-cli-${version}`
+
+  this.filelist.include('./bin/**/*')
+  this.filelist.include('./lib/**/*')
+  this.filelist.include('./test/**/*')
+  this.filelist.include('./package.json')
+  this.filelist.include('./Wkfile')
+  this.filelist.include('./README.md')
+
+  this.targets = [ 'zip' ]
+
+  const self = this
+
+  task('publish', { async: true }, function() {
+    wk.exec(`npm publish ${self.getPackagePath()}.tar.gz`)
+      .catch(this.fail)
+      .done(this.complete)
+  })
+
 })
 
 
-// packageTask('pkg', function() {
+publishTask('deploy', function() {
+  this.remote = 'origin'
+})
 
-//   const version = require('./package.json').version
-//   this.name = `workflow-cli-${version}`
+// const tsk = task('hello', { argv: { who: 'Marc' }, argv_config: true }, function(params) {
+//   console.log(params.who, ':', params.message)
+// })
 
-//   this.filelist.include('./bin/**/*')
-//   this.filelist.include('./lib/**/*')
-//   this.filelist.include('./test/**/*')
-//   this.filelist.include('./package.json')
-//   this.filelist.include('./Wkfile')
-//   this.filelist.include('./README.md')
-
-//   this.targets = [ 'gzip' ]
-
-//   const self = this
-
-//   task('publish', { async: true, visible: true }, function() {
-//     wk.exec(`npm publish ${self.getPackagePath()}.tar.gz`)
-//       .catch(this.fail)
-//       .done(this.complete)
-//   })
-
+// tsk.argv_config
+// .option('who', {
+//   defaultValue: 'John'
+// })
+// .index('who', 1)
+// .option('message', {
+//   defaultValue: 'Hello World'
 // })
 
 
-// publishTask('deploy', function() {
-//   this.remote = 'origin'
+// task('message', function() {
+//   console.log('message')
 // })
 
-const tsk = task('hello', { argv: { who: 'Marc' }, argv_config: true }, function(params) {
-  console.log(params.who, ':', params.message)
-})
+// task('message0', { async: true }, function() {
+//   setTimeout(() => {
+//     console.log('message0')
+//     this.complete()
+//   }, 1000)
+// })
 
-tsk.argv_config
-.option('who', {
-  defaultValue: 'John'
-})
-.index('who', 1)
-.option('message', {
-  defaultValue: 'Hello World'
-})
+// task('message1', function(params) {
+//   console.log(`message1 ${params.name}`)
+// })
+
+// task('message2', function() {
+//   console.log('message2')
+// })

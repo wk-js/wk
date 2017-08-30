@@ -2,87 +2,108 @@
 
 'use strict'
 
-const path = require('path')
-const fs   = require('fs')
+// Set API to global
+const wk       = require('./../lib/workflow.js')
+const API      = require('./../lib/api.js')
+const API_KEYS = Object.keys(API)
 
-const wk = require('./../lib/workflow.js')
+for (const i in API_KEYS) {
+  if (global.hasOwnProperty(API_KEYS[i])) {
+   throw new Error(`The api method ${API_KEYS[i]} override a global property`)
+  }
+}
+
+Object.assign(global, API)
+
+// Setup
+const path = require('path')
+const { Parser } = require('wk-argv-parser')
 
 const argv = process.argv.slice(2)
 const cli  = path.basename(process.argv[1])
 argv.unshift(cli)
 
-const parser = wk.ARGParser
-const WKCmd  = parser
+const WKCmd  = Parser
 
 .command(cli)
 
-.option('plouc', {
-  no_key: true,
-  index: 1
+// --verbose, -v
+.describe('verbose', 'Display every logs')
+.boolean('verbose', false)
+.alias('verbose', [ 'v' ])
+
+// --silent, -s
+.describe('silent', 'Hide every logs')
+.boolean('silent', false)
+.alias('silent', [ 's' ])
+
+// --log=log,error,warn
+.describe('log', 'Precise log levels (eg.: --log=log,warn,error)')
+.string('log', 'log,error,warn')
+
+// --tasks, -T
+.describe('tasks', 'List available tasks')
+.boolean('tasks', false)
+.alias('tasks', [ 'T' ])
+
+// --file, -F
+.describe('file', 'Precise a default file')
+.string('file', process.cwd() + '/Wkfile')
+.alias('file', [ 'F' ])
+.validate('file', function(pth) {
+  const fs = require('fs')
+  try {
+    fs.accessSync(pth, fs.constants.R_OK)
+    return true
+  } catch(e) {
+    return false
+  }
 })
 
-.option('verbose', {
-  type: 'boolean',
-  defaultValue: false,
-  aliases: [ 'v' ],
-  description: "Display verbose log"
-})
+// --parallel
+.describe('parallel', 'Execute tasks in parallel')
+.boolean('parallel', false)
+.alias('parallel', [ 'p' ])
 
-.option('silent', {
-  type: 'boolean',
-  defaultValue: false,
-  aliases: [ 's' ],
-  description: "Hide logs"
-})
+.required('file', 'Need a Wkfile')
 
-.option('log', {
-  type: 'value',
-  defaultValue: 'log,error,warn',
-  description: "Precise log levels (eg.: --log=log,warn,error)"
-})
+.help()
 
-.option('tasks', {
-  type: 'boolean',
-  defaultValue: false,
-  aliases: [ 'T' ],
-  description: 'List available tasks'
-})
-
-.option('file', {
-  type: 'value',
-  defaultValue: 'Wkfile',
-  aliases: [ 'F' ],
-  description: 'Precise a default file'
-})
-
-.option('parallel', {
-  type: 'boolean',
-  defaultValue: false,
-  aliases: [ 'p' ],
-  description: 'Execute tasks in parallel'
-})
-
-.option('multiple', {
-  type: 'boolean',
-  defaultValue: false,
-  aliases: [ 'm' ],
-  description: 'Run multiple tasks'
-})
-
-const ContextArgv = wk.ARGParser.getClass().getContextArgv(argv)
+const ContextArgv = Parser.getContextARGV(argv, WKCmd.config)
 const TaskArgv    = argv.filter((str) => {
   return ContextArgv.indexOf(str) === -1
 })
 
-const ContextObject  = WKCmd.parse(ContextArgv, true)
-ContextObject.strict = true
+const ContextResult = WKCmd.parse(ContextArgv)
 
-const options = ContextObject.params
+if (ContextResult.errors) {
+  wk.Print.error(ContextResult.errors.map(function(error) {
+    return `${error.message} (missings: ${error.missings})`
+  }).join('\n'))
+  process.exit(1)
+  return
+}
 
-// Load Wkfile
-const Wkfile_path = path.isAbsolute(options.file) ? options.file : path.join(process.cwd(), options.file)
-if (fs.existsSync(Wkfile_path)) require(Wkfile_path)
+const options = ContextResult.result.params
 
+// --help -h
+if (options.help) {
+  const pkg = require('./../package.json')
+  console.log( `${pkg.name} v${pkg.version} \n`)
+  console.log( ContextResult.result.config.help.description )
+  return
+}
+
+// --file, -F
+require(options.file)
+
+/**
+ * Fetch tasks from namespace
+ *
+ * @param {Namespace} ns
+ * @param {Array} tasks
+ * @returns
+ */
 function getTasks(ns, tasks) {
 
   const tsks = []
@@ -105,6 +126,10 @@ function getTasks(ns, tasks) {
   return tasks
 }
 
+/**
+ * List all visible tasks
+ *
+ */
 function listTasks() {
   const pad = require('./../lib/utils/string').pad
 
@@ -126,15 +151,6 @@ function listTasks() {
 
   console.log(tasks.join('\n'))
 
-}
-
-
-// --help -h
-if (options.help) {
-  const pkg = require('./../package.json')
-  console.log( `${pkg.name} v${pkg.version} \n`)
-  console.log( options.__config.help.description )
-  return
 }
 
 // -T --tasks
@@ -164,13 +180,8 @@ else {
 }
 
 if (TaskArgv.length > 0) {
-  const tsk = TaskArgv[0]
-
-  if (wk.Tasks[tsk]) {
-    wk.Tasks[tsk].argv.set(parser.parse(TaskArgv).params)
-    wk.Tasks[tsk].invoke()
-  }
-
+  options.parallel ?
+  parallel.apply(null, TaskArgv) : serie.apply(null, TaskArgv)
   return
 }
 

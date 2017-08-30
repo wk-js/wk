@@ -1,30 +1,31 @@
 
 const wk = require('../lib/workflow')
 
-wk.Print.verbose()
+wk.Print.silent()
 
-task('hello', { argv: { name: 'John' } }, function(params) {
+wk.task('hello', { argv: { name: 'John' } }, function(params) {
   console.log( 'Hello', params.name, '!' )
   return params.name
 })
 
-task('salut', { argv: { name: 'Max' } }, function(params) {
+wk.task('salut', { argv: { name: 'Max' } }, function(params) {
   console.log( 'Salut', params.name, '!' )
   return params.name
 })
 
-task('message', function(params) {
+wk.task('message', { async: true }, function(params) {
   console.log(params.name+':', params.message)
+  setTimeout(this.complete, 2000)
 })
 
-task('thinking', { async: true }, function(params) {
+wk.task('thinking', { async: true }, function(params) {
   console.log(params.name, 'thinking...')
   setTimeout(() => {
     this.complete()
-  }, 1000)
+  }, 2000)
 })
 
-serie(
+wk.serie(
   'hello',
   'salut',
   'thinking --name Max',
@@ -32,3 +33,19 @@ serie(
   'thinking --name John',
   'message --name John --message "Je vais bien et toi ?"'
 )
+
+// wk.task('msg', { async: true, pool: 3 }, function() {
+//   console.log('Start', this.name)
+//   setTimeout(() => {
+//     console.log('Done', this.name)
+//     this.complete()
+//   }, 2000)
+// })
+
+// wk.Tasks['msg'].invoke()
+// wk.Tasks['msg'].invoke()
+// wk.Tasks['msg'].invoke()
+// wk.Tasks['msg'].invoke()
+// wk.Tasks['msg'].invoke()
+// wk.Tasks['msg'].invoke()
+// wk.Tasks['msg'].invoke()

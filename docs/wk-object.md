@@ -156,7 +156,7 @@ Example:
 ```js
 const psExec = wk.createExec('echo Hello World')
 
-psExec.on('end', function() {
+psExec.events.on('exit', function() {
   console.log('Command ended')
 })
 
