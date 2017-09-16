@@ -1,21 +1,17 @@
 #!/usr/bin/env node
-
 'use strict'
 
-// Set API to global
-const wk       = require('./../lib/workflow.js')
-const API      = require('./../lib/api.js')
-const API_KEYS = Object.keys(API)
+const wk = require('../lib/wk')
 
-for (const i in API_KEYS) {
-  if (global.hasOwnProperty(API_KEYS[i])) {
-   throw new Error(`The api method ${API_KEYS[i]} override a global property`)
-  }
-}
+// Setup global
+global.wk        = wk
+global.task      = wk.task
+global.namespace = wk.namespace
+global.desc      = wk.desc
+global.serie     = wk.serie
+global.parallel  = wk.parallel
 
-Object.assign(global, API)
-
-// Setup
+// Setup command
 const path = require('path')
 const { Parser } = require('wk-argv-parser')
 
@@ -36,6 +32,10 @@ const WKCmd  = Parser
 .describe('silent', 'Hide every logs')
 .boolean('silent', false)
 .alias('silent', [ 's' ])
+
+// --no-color
+.describe('no-color', 'Remove colors')
+.boolean('no-color', false)
 
 // --log=log,error,warn
 .describe('log', 'Precise log levels (eg.: --log=log,warn,error)')
@@ -104,26 +104,24 @@ require(options.file)
  * @param {Array} tasks
  * @returns
  */
-function getTasks(ns, tasks) {
+function getTasks(ns) {
 
-  const tsks = []
+  let tsks = []
 
   for (const key in ns.tasks) {
-    if (ns.tasks[key].visible)
-      tsks.push( ns.tasks[key] )
+    if (ns.tasks[key].visible) tsks.push( ns.tasks[key] )
   }
 
   if (tsks.length > 0) {
-    if (ns.path.length === 0) tasks.push(`[default]`)
-    else tasks.push( `\n[${ns.path}]` )
-    tasks = tasks.concat(tsks)
+    if (ns.path.length === 0) tsks.unshift(`[default]`)
+    else tsks.unshift( `\n[${ns.path}]` )
   }
 
   for (const k in ns.children) {
-    getTasks(ns.children[k], tasks)
+    tsks = tsks.concat(getTasks(ns.children[k]))
   }
 
-  return tasks
+  return tsks
 }
 
 /**
@@ -131,9 +129,9 @@ function getTasks(ns, tasks) {
  *
  */
 function listTasks() {
-  const pad = require('./../lib/utils/string').pad
+  const { pad } = require('lol/utils/string')
 
-  let tasks = getTasks(wk.defaultNamespace, [])
+  let tasks = getTasks(wk.defaultNamespace)
 
   let length = 0
   for (const i in tasks) {
@@ -145,7 +143,7 @@ function listTasks() {
     if (typeof tsk === 'string') return tsk
     if (!tsk.description) return 'wk ' + `${wk.Print.green(tsk.path)}`
 
-    const path = pad(tsk.path, length + 5, ' ', true)
+    const path = pad(tsk.path, length + 5, ' ', false)
     return 'wk ' + wk.Print.green(path) + ' ' + wk.Print.grey('# ' + tsk.description)
   })
 
@@ -179,8 +177,26 @@ else {
   }
 }
 
+if (options['no-color']) {
+  wk.Print.use_color = false
+}
+
 if (TaskArgv.length > 0) {
-  wk.run(TaskArgv.join(' '))
+  let tasks = []
+
+  for (let i = 0, ilen = TaskArgv.length; i < ilen; i++) {
+    const argv = Parser.parse(TaskArgv[i]).params
+
+    if (wk.Tasks[argv._[0]]) {
+      tasks.push( TaskArgv[i] )
+    } else {
+      tasks = TaskArgv.join(' ')
+      break
+    }
+  }
+
+  if (options.parallel) wk.parallel(tasks)
+  else wk.serie(tasks)
   return
 }
 
