@@ -95,7 +95,7 @@ if (options.help) {
 }
 
 // --file, -F
-require(options.file)
+require(path.join(process.cwd(), options.file))
 
 /**
  * Fetch tasks from namespace
