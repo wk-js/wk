@@ -51,7 +51,7 @@ function bump_tasks(subtask) {
 
       const nextVersion = semver.inc(getCurrentVersion(), release, identifier)
       console.log(`Next version: "${nextVersion}"`)
-console.log(argv)
+
       prompt(`Continue? `, ( answer ) => {
         if (answer[0] === 'y') {
           resolve( nextVersion )
