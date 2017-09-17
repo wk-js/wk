@@ -1,33 +1,46 @@
 'use strict'
 
-const publishTask = wk.require.extra('publish-task')
-const packageTask = wk.require.extra('package-task')
+wk.require('tasks/publish', true)
+wk.require('tasks/package', true)
 
-packageTask('pkg', function() {
-
+const packageTask = wk.Tasks['package']
+task('package', function(resolve, reject) {
   const version = require('./package.json').version
-  this.name = `workflow-cli-${version}`
 
-  this.filelist.include('./bin/**/*')
-  this.filelist.include('./lib/**/*')
-  this.filelist.include('./test/**/*')
-  this.filelist.include('./package.json')
-  this.filelist.include('./Wkfile')
-  this.filelist.include('./README.md')
+  const argv = {
+    name: `workflow-cli-${version}`,
+    targets: [ 'zip' ],
+    include: [
+      './bin/**/*',
+      './lib/**/*',
+      './package.json',
+      './README.md'
+    ].join(','),
+    exclude: [].join(','),
+    pkg_path: process.cwd() + '/pkg'
+  }
 
-  this.targets = [ 'zip' ]
-
-  const self = this
-
-  task('publish', { async: true }, function() {
-    wk.exec(`npm publish ${self.getPackagePath()}.tar.gz`)
-      .catch(this.fail)
-      .done(this.complete)
-  })
-
+  packageTask.invoke(null, { argv })
+  .catch(reject)
+  .then(() => resolve(argv))
 })
 
+const bumpTask = wk.Tasks['bump']
+task('bump', function(resolve, reject) {
+  bumpTask.invoke(null, {
+    argv: {
+      remote: 'origin'
+    }
+  })
+  .catch(reject)
+  .then(resolve)
+})
 
-publishTask('release', function() {
-  this.remote = 'origin'
+task('publish', [ 'package' ], function(resolve, reject) {
+  let packagePath = this.preReqResults[0].pkg_path
+  packagePath += `/${this.preReqResults[0].name}.tar.gz`
+
+  wk.exec(`npm publish ${packagePath}.tar.gz`)
+  .catch(reject)
+  .then(resolve)
 })
