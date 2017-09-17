@@ -5,7 +5,7 @@ wk.require('tasks/package', true, 'extra')
 
 task('bump', function(resolve, reject) {
   wk.run('bump', {
-    argv: { remote: 'origin' }
+    argv: this.argv
   }, 'extra')
   .catch(reject)
   .then(resolve)

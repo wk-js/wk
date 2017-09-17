@@ -30,9 +30,11 @@ function prompt( message, cb ) {
 function bump_tasks(subtask) {
   return {
     "stage_clean": function(resolve, reject) {
+      const { argv } = subtask.invocator || subtask
+
       wk.exec('git status --porcelain --untracked-files=no', { printStdout: false })
       .then((result) => {
-        if (result.stdout.length !== 0) {
+        if (!argv['ignore-stage'] && result.stdout.length !== 0) {
           reject(`Stage is not clean`)
           return
         }
@@ -41,11 +43,11 @@ function bump_tasks(subtask) {
     },
 
     "next_version": function(resolve, reject) {
-      const { argv } = subtask
-      const identifier = argv['identifier'] ? argv['identifier'] : null
-      let release      = typeof argv['release'] === 'string' ? argv['release'] : 'patch'
+      const { argv }   = subtask.invocator || subtask
+      const identifier = argv['identifier']
+      let release      = argv['release']
 
-      if (argv['prerelease'] || argv['pre']) release = 'prerelease'
+      if (argv['prerelease']) release = 'prerelease'
 
       const nextVersion = semver.inc(getCurrentVersion(), release, identifier)
       console.log(`Next version: "${nextVersion}"`)
@@ -114,9 +116,10 @@ function push_tasks(subtask) {
     },
 
     "push": function(resolve, reject) {
-      const version = getPackage().version
+      const { argv } = subtask.invocator || subtask
+      const version  = getPackage().version
 
-      wk.exec(`git push ${subtask.argv.remote} --tag v${version}`)
+      wk.exec(`git push ${argv.remote} --tag v${version}`)
         .catch(reject)
         .then(resolve)
     }
@@ -127,10 +130,19 @@ function push_tasks(subtask) {
 function command() {
   this
   .string('remote', 'origin')
+  .string('identifier', null)
+  .string('release', 'patch')
+
+  .boolean('prerelease')
+  .alias('prerelease', ['pre'])
+
+  .boolean('ignore-stage', false)
+
+  .help()
 }
 
 
-task('bump', { visible: false }, function(resolve, reject) {
+task('bump', { command }, function(resolve, reject) {
   wk.nano
   .serie(bump_tasks(this))
   .catch(reject)
