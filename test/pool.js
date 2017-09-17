@@ -2,7 +2,7 @@
 
 const wk = require('../lib/wk')
 
-wk.task('msg', { pool: 3 }, function(resolve) {
+wk.task('msg', { concurrency: 3 }, function(resolve) {
   console.log('Start', this.name)
   setTimeout(() => {
     console.log('Done', this.name)

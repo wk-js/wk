@@ -4,12 +4,8 @@
 const wk = require('../lib/wk')
 
 // Setup global
-global.wk        = wk
-global.task      = wk.task
-global.namespace = wk.namespace
-global.desc      = wk.desc
-global.serie     = wk.serie
-global.parallel  = wk.parallel
+global.wk = wk
+wk.api(global)
 
 // Setup command
 const path = require('path')
@@ -19,7 +15,7 @@ const argv = process.argv.slice(2)
 const cli  = path.basename(process.argv[1])
 argv.unshift(cli)
 
-const WKCmd  = Parser
+const WKCmd = Parser
 
 .command(cli)
 

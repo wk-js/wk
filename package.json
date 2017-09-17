@@ -14,7 +14,8 @@
     "lol": "github:makemepulse/lol.js",
     "when": "^3.7.7",
     "wk-argv-parser": "github:wk-js/argv-parser",
-    "wk-print": "github:wk-js/print"
+    "wk-print": "github:wk-js/print",
+    "wkno": "github:wk-js/wkno"
   },
   "devDependencies": {
     "fs-extra": "^0.30.0",
