@@ -51,7 +51,7 @@ function bump_tasks(subtask) {
 
       const nextVersion = semver.inc(getCurrentVersion(), release, identifier)
       console.log(`Next version: "${nextVersion}"`)
-
+console.log(argv)
       prompt(`Continue? `, ( answer ) => {
         if (answer[0] === 'y') {
           resolve( nextVersion )
@@ -130,8 +130,12 @@ function push_tasks(subtask) {
 function command() {
   this
   .string('remote', 'origin')
+
+  .enum('release', [ 'major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease' ], 'patch')
+  .index('release', 1)
+
   .string('identifier', null)
-  .string('release', 'patch')
+  .index('identifier', 2)
 
   .boolean('prerelease')
   .alias('prerelease', ['pre'])
