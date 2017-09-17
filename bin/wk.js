@@ -86,20 +86,6 @@ if (ContextResult.errors) {
 
 const options = ContextResult.result.params
 
-// --help -h
-if (options.help) {
-  const pkg = require('./../package.json')
-  console.log( `${pkg.name} v${pkg.version} \n`)
-  console.log( ContextResult.result.config.help.description )
-  return
-}
-
-// --file, -F
-require(
-  path.isAbsolute(options.file) ?
-  options.file : path.join(process.cwd(), options.file)
-)
-
 /**
  * Fetch tasks from namespace
  *
@@ -154,11 +140,6 @@ function listTasks() {
 
 }
 
-// -T --tasks
-if (options.tasks) {
-  return listTasks()
-}
-
 // --silent
 if (options.silent) {
   wk.Print.silent()
@@ -184,6 +165,25 @@ if (options['no-color']) {
   wk.Print.use_color = false
 }
 
+// --file, -F
+require(
+  path.isAbsolute(options.file) ?
+  options.file : path.join(process.cwd(), options.file)
+)
+
+// --help -h
+if (options.help) {
+  const pkg = require('./../package.json')
+  console.log( `${pkg.name} v${pkg.version} \n`)
+  console.log( ContextResult.result.config.help.description )
+  return
+}
+
+// -T --tasks
+if (options.tasks) {
+  return listTasks()
+}
+
 if (TaskArgv.length > 0) {
   let tasks = []
 
@@ -196,6 +196,11 @@ if (TaskArgv.length > 0) {
       tasks = TaskArgv.join(' ')
       break
     }
+  }
+
+  if (tasks.length == 1) {
+    wk.run(tasks[0])
+    return
   }
 
   if (options.parallel) wk.parallel(tasks)
