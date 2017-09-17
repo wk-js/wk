@@ -193,7 +193,6 @@ wk.nano.serie(tasks, [
 // => Max
 ```
 
-
 ## `wk.require(path[, createNamespace])`
 
 `wk.require` can be used to load a file, a directory.
@@ -365,6 +364,31 @@ task('punctuation', function(resolve) {
 task('message', [ 'greet', 'name', 'punctuation' ], { async: false, argv: { punctuation: '?' } }, function() {
   console.log( this.preReqResults[0], this.preReqResults[1], this.argv.punctuation)
   // => Hello John !
+})
+```
+
+You can pass to task at the execution
+
+```js
+task('who', { async: false }, function() {
+  console.log(this.argv.name)
+})
+
+wk.run('who --name John')
+// Or
+wk.Tasks['who'].invoke({ argv: { name: 'John' } })
+wk.Tasks['who'].execute({ argv: { name: 'John' } })
+```
+
+Same thing for prerequisites
+
+```js
+task('who', function(resolve) {
+  resolve(this.argv.name)
+})
+
+task('message', [ 'who --name John' ], { async: false }, function() {
+  console.log('Hello', this.preReqResults[0], '!')
 })
 ```
 

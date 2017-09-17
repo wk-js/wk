@@ -8,12 +8,10 @@ wk --help
     --verbose                               Display verbose log
     --silent                                Hide logs
     --log <string>                          Precise log levels (eg.: --log=log,warn,error)
-    --clean --kill                          Kill all processes referenced inside tmp/pids
     --help -h                               Help?
     --tasks -T                              List available tasks
     --file -F <string>                      Precise a default file
     --parallel -p                           Execute tasks in parallel
-    --multiple -m                           Run multiple tasks
 ```
 
 ## Execute task
@@ -31,20 +29,14 @@ wk message:hello
 To execute multiple tasks
 
 ```sh
-wk -m mytask0 mytask1
-```
-
-**[Deprecated]** To execute multiple tasks you can use `run` task.
-
-```sh
-wk run mytask0 mytask1
+wk "mytask0" "mytask1"
 ```
 
 ## Passing arguments
 
 Every arguments before `wk` will be added to `process.env`.
-Every arguments between `wk` and the task will be added to `wk.CONTEXT_ARGV` and parsed result to `wk.CONTEXT_PARAMS`.
-Every arguments after the task will be added to `wk.COMMAND_ARGV` and parsed result to `wk.COMMAND_PARAMS`.
+Every arguments between `wk` and the task belongs to `wk`.
+Every arguments after the task belongs to the task.
 
 ```sh
 ENV=staging wk --verbose mytask --message="Hello World"
@@ -53,14 +45,7 @@ ENV=staging wk --verbose mytask --message="Hello World"
 To execute multiple tasks with arguments.
 
 ```sh
-wk -m 'mytask0 --message="Hello World"' 'mytask1 --message="Surprise"'
-```
-
-
-**[Deprecated]** To execute multiple tasks with arguments, use `run` task.
-
-```sh
-wk run mytask0 -- [ --message="Hello World" ] mytask1 -- [ --message="Surprise" ]
+wk 'mytask0 --message="Hello World"' 'mytask1 --message="Surprise"'
 ```
 
 ## Fetch arguments
@@ -70,8 +55,8 @@ wk hello John --uppercase
 ```
 
 ```js
-task('hello', function( name ) {
-  console.log('Hello ' + name + '!')
+task('hello', { async: false }, function() {
+  console.log('Hello ' + this.argv.name + '!')
   // Print "Hello John!"
 })
 ```
@@ -83,10 +68,8 @@ wk hello --who Jack
 ```
 
 ```js
-task('hello', function() {
+task('hello', { async: false }, function() {
   console.log('Hello ' + this.argv.who + '!')
   // Print "Hello Jack!"
 })
 ```
-
-**Warning** — `wk.COMMAND_PARAMS` and `this.argv` is the same object.

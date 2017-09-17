@@ -31,20 +31,16 @@ More information in [API](docs/api.md#api)
 ```
 wk --help
 
->   --sequence --seq -s (serie|parallel)    Execute tasks in "serie" or "parallel"
->   --parallel -p                           Execute tasks in "parallel"
->   --verbose                               Display verbose log
->   --silent                                Hide logs
->   --log <string>                          Precise log levels (eg.: --log=log,warn,error)
->   --help -h                               Help?
->   --clean --kill                          Kill all processes referenced inside tmp/pids
->   --tasks -T                              List available tasks
->   --file -F <string>                      Precise a default file
+>         --verbose -v    Display every logs
+>          --silent -s    Hide every logs
+>           --no-color    Remove colors
+>       --log <string>    Precise log levels (eg.: --log=log,warn,error)
+>           --tasks -T    List available tasks
+>   --file -F <string>    Precise a default file
+>        --parallel -p    Execute tasks in parallel
 ```
 
 # Documentations
 
 - [Command line](docs/cli.md#cli)
 - [API](docs/api.md#api)
-- [ExtraTask](docs/extra-task.md#extra-task)
-- [wk object](docs/wk-object.md#wk-object)
