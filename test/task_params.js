@@ -1,28 +1,26 @@
 
-const wk = require('../lib/workflow')
+const wk = require('../lib/wk')
 
 wk.Print.silent()
 
-wk.task('hello', { argv: { name: 'John' } }, function(params) {
-  console.log( 'Hello', params.name, '!' )
-  return params.name
+wk.task('hello', { argv: { name: 'John' } }, function(resolve) {
+  console.log( 'Hello', this.argv.name, '!' )
+  resolve()
 })
 
-wk.task('salut', { argv: { name: 'Max' } }, function(params) {
-  console.log( 'Salut', params.name, '!' )
-  return params.name
+wk.task('salut', { argv: { name: 'Max' } }, function(resolve) {
+  console.log( 'Salut', this.argv.name, '!' )
+  resolve()
 })
 
-wk.task('message', { async: true }, function(params) {
-  console.log(params.name+':', params.message)
-  setTimeout(this.complete, 2000)
+wk.task('message', function(resolve) {
+  console.log(this.argv.name+':', this.argv.message)
+  setTimeout(resolve, 2000)
 })
 
-wk.task('thinking', { async: true }, function(params) {
-  console.log(params.name, 'thinking...')
-  setTimeout(() => {
-    this.complete()
-  }, 2000)
+wk.task('thinking', function(resolve) {
+  console.log(this.argv.name, 'thinking...')
+  setTimeout(resolve, 2000)
 })
 
 wk.serie(

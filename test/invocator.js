@@ -1,32 +1,34 @@
 'use strict'
 
-const wk = require('../lib/workflow')
+const wk = require('../lib/wk')
 
-wk.task('message', [ `who --random ${Math.round(Math.random())}`, 'where', 'when' ], function(params) {
-  const p = this.invocator ? this.invocator.argv : params
+wk.task('message', [ `who --random ${Math.round(Math.random())}`, 'where', 'when' ], { async: false }, function(resolve) {
+  const p = this.argv
   console.log(`${p.who} is going to ${p.where} at ${p.when}`)
+  resolve()
 })
 
-wk.task('who', { async: true }, function(params) {
+wk.task('who', function(resolve) {
   setTimeout(() => {
     console.log(this.invocator.argv)
-    this.invocator.argv.who = params.random ? 'John' : 'Max'
-    this.complete(this.invocator.argv.who)
+    this.invocator.argv.who = this.argv.random ? 'John' : 'Max'
+    resolve(this.invocator.argv.who)
   }, 1000)
 })
 
-wk.task('where', function(params, preReqValues) {
+wk.task('where', { async: false }, function() {
   console.log(this.invocator.argv)
-  this.invocator.argv.where = preReqValues[0] == 'John' ?
+  this.invocator.argv.where = this.preReqResults[0] == 'John' ?
   'London' : 'Paris'
 })
 
-wk.task('when', function() {
+wk.task('when', { async: false }, function() {
   console.log(this.invocator.argv)
   this.invocator.argv.when = '10am'
 })
 
 wk.task('start', [ 'message' ])
 
-// wk.Tasks['start']  .invoke()
-wk.Tasks['message'].invoke()
+wk.Tasks['start']  .invoke()
+// console.log(Object.keys(wk.Tasks))
+// wk.Tasks['message'].invoke()
