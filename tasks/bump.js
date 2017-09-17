@@ -130,14 +130,14 @@ function command() {
 }
 
 
-task('bump', function(resolve, reject) {
+task('bump', { visible: false }, function(resolve, reject) {
   wk.nano
   .serie(bump_tasks(this))
   .catch(reject)
   .then(resolve)
 })
 
-task('push', { command }, function(resolve, reject) {
+task('push', { command, visible: false }, function(resolve, reject) {
   if (this.invocator) {
     this.argv = this.invocator.argv
   }
@@ -148,4 +148,4 @@ task('push', { command }, function(resolve, reject) {
   .then(resolve)
 })
 
-task('default', { command }, [ ns('bump'), ns('push') ])
+task('default', { command: command, visible: false }, [ ns('bump'), ns('push') ])
