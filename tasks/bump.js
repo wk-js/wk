@@ -137,7 +137,7 @@ task('bump', { visible: false }, function(resolve, reject) {
   .then(resolve)
 })
 
-task('push', { command, visible: false }, function(resolve, reject) {
+task('push', { command }, function(resolve, reject) {
   if (this.invocator) {
     this.argv = this.invocator.argv
   }
@@ -148,4 +148,4 @@ task('push', { command, visible: false }, function(resolve, reject) {
   .then(resolve)
 })
 
-task('default', { command: command, visible: false }, [ ns('bump'), ns('push') ])
+task('default', { command }, [ ns('bump'), ns('push') ])

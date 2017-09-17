@@ -1,20 +1,16 @@
 'use strict'
 
-wk.require('tasks/bump', true)
-wk.require('tasks/package', true)
+wk.require('tasks/bump', true, 'extra')
+wk.require('tasks/package', true, 'extra')
 
-const BumpTask = wk.Tasks['bump']
 task('bump', function(resolve, reject) {
-  BumpTask.invoke({
-    argv: {
-      remote: 'origin'
-    }
-  })
+  wk.run('bump', {
+    argv: { remote: 'origin' }
+  }, 'extra')
   .catch(reject)
   .then(resolve)
 })
 
-const PackageTask = wk.Tasks['package']
 task('package', function(resolve, reject) {
   const version = require('./package.json').version
 
@@ -31,7 +27,7 @@ task('package', function(resolve, reject) {
     pkg_path: process.cwd() + '/pkg'
   }
 
-  PackageTask.invoke({ argv })
+  wk.run('package', { argv }, 'extra')
   .catch(reject)
   .then(() => resolve(argv))
 })

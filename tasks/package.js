@@ -87,7 +87,8 @@ function command() {
   .array('exclude')
 }
 
-task('default', { command, visible: false }, function(resolve, reject) {
+
+task('default', { command }, function(resolve, reject) {
   wk.nano
   .serie(tasks(this), [ 'clean', 'filelist', 'copy', 'archive', 'clean' ])
   .catch(reject)
