@@ -35,13 +35,13 @@ function tasks(subtask) {
       FL = new FileList
 
       if (subtask.argv.include) {
-        subtask.argv.include.split(',').forEach((inc) => {
+        subtask.argv.include.forEach((inc) => {
           FL.include(inc)
         })
       }
 
       if (subtask.argv.exclude) {
-        subtask.argv.exclude.split(',').forEach((exc) => {
+        subtask.argv.exclude.forEach((exc) => {
           FL.exclude(exc)
         })
       }
@@ -63,7 +63,7 @@ function tasks(subtask) {
 
 
     "archive": function(resolve, reject) {
-      const targets = subtask.argv.targets.split(',').map(function( target ) {
+      const targets = subtask.argv.targets.map(function( target ) {
         if (!COMMANDS[target]) return null
         return {
           command: template( COMMANDS[target], { path: subtask.argv.name } ),
@@ -81,10 +81,10 @@ function tasks(subtask) {
 function command() {
   this
   .string('name')
-  .string('targets', 'gzip')
   .string('pkg_path', path.join(process.cwd(), 'pkg'))
-  .string('include')
-  .string('exclude')
+  .array('targets', 'gzip,zip,bzip2')
+  .array('include')
+  .array('exclude')
 }
 
 task('default', { command }, function(resolve, reject) {

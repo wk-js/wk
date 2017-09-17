@@ -1,9 +1,20 @@
 'use strict'
 
-wk.require('tasks/publish', true)
+wk.require('tasks/bump', true)
 wk.require('tasks/package', true)
 
-const packageTask = wk.Tasks['package']
+const BumpTask = wk.Tasks['bump']
+task('bump', function(resolve, reject) {
+  BumpTask.invoke({
+    argv: {
+      remote: 'origin'
+    }
+  })
+  .catch(reject)
+  .then(resolve)
+})
+
+const PackageTask = wk.Tasks['package']
 task('package', function(resolve, reject) {
   const version = require('./package.json').version
 
@@ -15,25 +26,14 @@ task('package', function(resolve, reject) {
       './lib/**/*',
       './package.json',
       './README.md'
-    ].join(','),
-    exclude: [].join(','),
+    ],
+    exclude: [],
     pkg_path: process.cwd() + '/pkg'
   }
 
-  packageTask.invoke(null, { argv })
+  PackageTask.invoke({ argv })
   .catch(reject)
   .then(() => resolve(argv))
-})
-
-const bumpTask = wk.Tasks['bump']
-task('bump', function(resolve, reject) {
-  bumpTask.invoke(null, {
-    argv: {
-      remote: 'origin'
-    }
-  })
-  .catch(reject)
-  .then(resolve)
 })
 
 task('publish', [ 'package' ], function(resolve, reject) {
