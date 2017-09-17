@@ -11,15 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "eventemitter3": "^2.0.3",
-    "filelist": "github:FuriouZz/filelist",
-    "fs-extra": "^0.30.0",
     "lol": "github:makemepulse/lol.js",
-    "semver": "^5.4.1",
     "when": "^3.7.7",
     "wk-argv-parser": "github:wk-js/argv-parser",
     "wk-print": "github:wk-js/print"
   },
   "devDependencies": {
+    "fs-extra": "^0.30.0",
+    "semver": "^5.4.1",
+    "filelist": "github:FuriouZz/filelist",
     "eslint": "^3.5.0",
     "mocha": "^3.0.2"
   },
