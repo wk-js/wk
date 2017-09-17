@@ -95,7 +95,10 @@ if (options.help) {
 }
 
 // --file, -F
-require(path.join(process.cwd(), options.file))
+require(
+  path.isAbsolute(options.file) ?
+  options.file : path.join(process.cwd(), options.file)
+)
 
 /**
  * Fetch tasks from namespace
@@ -113,8 +116,8 @@ function getTasks(ns) {
   }
 
   if (tsks.length > 0) {
-    if (ns.path.length === 0) tsks.unshift(`[default]`)
-    else tsks.unshift( `\n[${ns.path}]` )
+    if (ns.getPath().length === 0) tsks.unshift(`[default]`)
+    else tsks.unshift( `\n[${ns.getPath()}]` )
   }
 
   for (const k in ns.children) {
@@ -136,14 +139,14 @@ function listTasks() {
   let length = 0
   for (const i in tasks) {
     if (typeof tasks[i] === 'string') continue
-    if (length < tasks[i].path.length) length = tasks[i].path.length
+    if (length < tasks[i].getPath().length) length = tasks[i].getPath().length
   }
 
   tasks = tasks.map(function(tsk) {
     if (typeof tsk === 'string') return tsk
-    if (!tsk.description) return 'wk ' + `${wk.Print.green(tsk.path)}`
+    if (!tsk.description) return 'wk ' + `${wk.Print.green(tsk.getPath())}`
 
-    const path = pad(tsk.path, length + 5, ' ', false)
+    const path = pad(tsk.getPath(), length + 5, ' ', false)
     return 'wk ' + wk.Print.green(path) + ' ' + wk.Print.grey('# ' + tsk.description)
   })
 
