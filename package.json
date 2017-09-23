@@ -4,7 +4,7 @@
   "description": "Task runner inspired by Jake.js",
   "main": "lib/workflow.js",
   "bin": {
-    "wk": "./bin/cli.js"
+    "wk": "./bin/wk.js"
   },
   "scripts": {},
   "author": "FuriouZz",
@@ -18,11 +18,11 @@
     "wkno": "github:wk-js/wkno"
   },
   "devDependencies": {
-    "fs-extra": "^0.30.0",
-    "semver": "^5.4.1",
-    "filelist": "github:FuriouZz/filelist",
     "eslint": "^3.5.0",
-    "mocha": "^3.0.2"
+    "filelist": "github:FuriouZz/filelist",
+    "fs-extra": "^0.30.0",
+    "mocha": "^3.5.3",
+    "semver": "^5.4.1"
   },
   "homepage": "https://github.com/wk-js/wk",
   "bugs": {

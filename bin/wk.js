@@ -157,6 +157,7 @@ else {
   }
 }
 
+// --no-color
 if (options['no-color']) {
   wk.Print.use_color = false
 }
