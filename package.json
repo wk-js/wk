@@ -10,19 +10,19 @@
   "author": "FuriouZz",
   "license": "ISC",
   "dependencies": {
-    "eventemitter3": "^2.0.3",
-    "lol": "github:makemepulse/lol.js",
-    "when": "^3.7.7",
-    "wk-argv-parser": "github:wk-js/argv-parser",
-    "wk-print": "github:wk-js/print",
-    "wkno": "github:wk-js/wkno"
+    "eventemitter3": "2.0.3",
+    "lol": "github:makemepulse/lol.js#v0.0.3",
+    "when": "3.7.7",
+    "wk-argv-parser": "github:wk-js/argv-parser#v0.0.8",
+    "wk-print": "github:wk-js/print#v0.0.2",
+    "wkno": "github:wk-js/wkno#v0.0.5"
   },
   "devDependencies": {
-    "eslint": "^3.5.0",
-    "filelist": "github:FuriouZz/filelist",
-    "fs-extra": "^0.30.0",
-    "mocha": "^3.5.3",
-    "semver": "^5.4.1"
+    "eslint": "3.5.0",
+    "filelist": "github:FuriouZz/filelist#61e3e7dfa8fa257f232f09fa14265807f40c8570",
+    "fs-extra": "0.30.0",
+    "mocha": "3.5.3",
+    "semver": "5.4.1"
   },
   "homepage": "https://github.com/wk-js/wk",
   "bugs": {
