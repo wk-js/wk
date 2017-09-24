@@ -1,0 +1,17 @@
+{
+  "name": "wk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/wk.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lol": "github:makemepulse/lol.js",
+    "when": "^3.7.8",
+    "wk-argv-parser": "github:wk-js/argv-parser",
+    "wkno": "../wkno"
+  }
+}
