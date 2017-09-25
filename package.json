@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lol": "github:makemepulse/lol.js",
+    "eventemitter3": "^2.0.3",
+    "lol": "github:makemepulse/lol.js#0.0.4",
     "when": "^3.7.8",
     "wk-argv-parser": "github:wk-js/argv-parser",
     "wkno": "../wkno"

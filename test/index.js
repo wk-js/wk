@@ -2,8 +2,8 @@
 
 const wk = require('../lib/wk')
 
-wk.task('greet', function(resolve) {
-  resolve(Math.round(Math.random()) ? 'Salut' : 'Hello')
+wk.task('greet', function() {
+  return Math.round(Math.random()) ? 'Salut' : 'Hello'
 })
 
 wk.task('name', {
@@ -12,22 +12,17 @@ wk.task('name', {
     .string('name')
     .required('name', 'Name is needed')
   }
-}, function(resolve, reject) {
-  console.log(this.getParams(), this.command)
-
+}, function() {
   if (this.command.errors) {
-    reject(new Error(this.command.errors))
-    return
+    throw new Error(this.command.errors)
   }
 
-  const params = this.getParams()
-  resolve(params.name)
+  return this.params.name
 })
 
 wk.namespace('messages', function() {
-  wk.task('hello', [ 'name', 'greet' ], function(resolve) {
+  wk.task('hello', [ 'name', 'greet' ], function() {
     console.log(`${this.result[1]} ${this.result[0]} !`)
-    resolve()
   })
 })
 
@@ -35,18 +30,16 @@ function command() {
   this
 
   .string('name')
-  .required('name', 'Name is needed')
+  .required('name', 'Name required')
 }
 
-wk.task('cmd', { command }, function(resolve, reject) {
-  const p = this.getParams()
-
+wk.task('cmd', { command, async: true }, function(resolve, reject) {
   if (this.command.errors) {
-    reject(new Error(this.command.errors))
+    return reject(new Error(this.command.errors))
   }
 
   wk.serie(
-    `name --name ${p.name}`,
+    `name --name ${this.params.name}`,
     `greet`
   )
   .then((a) => {
@@ -55,22 +48,24 @@ wk.task('cmd', { command }, function(resolve, reject) {
   .catch(reject)
 })
 
-// wk.task('start', [ 'messages:hello --test test' ])
-
+// wk.run('cmd --name lol')
+// wk.run('messages:hello')
 wk.require('./test2')
 
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
-wk.run('new')
+wk.parallel(
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+  'new',
+)
 
 // console.log(require.main)
 // console.log(module)

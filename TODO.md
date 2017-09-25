@@ -1,5 +1,6 @@
-* [ ] Handle task creation and task execution inside task object
-* [ ] Test concurrency in global and per task (wkno)
+* [x] Handle task creation and task execution inside task object
+* [x] Test concurrency in global and per task (wkno)
+* [x] Reimport subprocess and subprocess manager (wk 1.0),
+* [x] [API] `taskProcess`, `wk.exec`, `wk.createExec`
 * [ ] Test contexts
-* [ ] Reimport subprocess and subprocess manager (wk 1.0),
-* [ ] [API] `taskProcess`, `wk.exec`, `wk.createExec`
+* [ ] Enhance context implementation

@@ -1,5 +1,5 @@
 
-wk.task('new', function(resolve) {
+wk.task('new', { async: true }, function(resolve) {
   console.log('new')
-  setTimeout(resolve, 5000)
+  setTimeout(resolve, 1000)
 })
