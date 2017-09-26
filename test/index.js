@@ -2,11 +2,11 @@
 
 const wk = require('../lib/wk')
 
-wk.task('greet', function() {
+task('greet', function() {
   return Math.round(Math.random()) ? 'Salut' : 'Hello'
 })
 
-wk.task('name', {
+task('name', {
   command: function() {
     this
     .string('name')
@@ -20,8 +20,8 @@ wk.task('name', {
   return this.params.name
 })
 
-wk.namespace('messages', function() {
-  wk.task('hello', [ 'name', 'greet' ], function() {
+namespace('messages', function() {
+  task('hello', [ 'name', 'greet' ], function() {
     console.log(`${this.result[1]} ${this.result[0]} !`)
   })
 })
@@ -33,12 +33,12 @@ function command() {
   .required('name', 'Name required')
 }
 
-wk.task('cmd', { command, async: true }, function(resolve, reject) {
+task('cmd', { command, async: true }, function(resolve, reject) {
   if (this.command.errors) {
     return reject(new Error(this.command.errors))
   }
 
-  wk.serie(
+  serie(
     `name --name ${this.params.name}`,
     `greet`
   )
@@ -48,24 +48,8 @@ wk.task('cmd', { command, async: true }, function(resolve, reject) {
   .catch(reject)
 })
 
-// wk.run('cmd --name lol')
-// wk.run('messages:hello')
-wk.require('./test2')
-
-wk.parallel(
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-  'new',
-)
+// run('cmd --name lol')
+// run('messages:hello')
 
 // console.log(require.main)
 // console.log(module)
@@ -73,14 +57,14 @@ wk.parallel(
 
 // console.log(wk)
 
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
-// wk.getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
+// getTask('new').execute()
 
 // console.log(module.require.toString())
 // console.log(module)
