@@ -2,11 +2,11 @@
 
 const wk = require('../lib/wk')
 
-task('greet', function() {
+wk.task('greet', function() {
   return Math.round(Math.random()) ? 'Salut' : 'Hello'
 })
 
-task('name', {
+wk.task('name', {
   command: function() {
     this
     .string('name')
@@ -20,8 +20,8 @@ task('name', {
   return this.params.name
 })
 
-namespace('messages', function() {
-  task('hello', [ 'name', 'greet' ], function() {
+wk.namespace('messages', function() {
+  wk.task('hello', [ 'name', 'greet' ], function() {
     console.log(`${this.result[1]} ${this.result[0]} !`)
   })
 })
@@ -33,12 +33,12 @@ function command() {
   .required('name', 'Name required')
 }
 
-task('cmd', { command, async: true }, function(resolve, reject) {
+wk.task('cmd', { command, async: true }, function(resolve, reject) {
   if (this.command.errors) {
     return reject(new Error(this.command.errors))
   }
 
-  serie(
+  wk.serie(
     `name --name ${this.params.name}`,
     `greet`
   )

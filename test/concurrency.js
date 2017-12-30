@@ -1,13 +1,13 @@
 'use strict'
 
-require('../lib/wk')
+const wk = require('../lib/wk')
 
-task('task0', { async: true, concurrency: 1 }, function(resolve) {
+wk.task('task0', { async: true, concurrency: 1 }, function(resolve) {
   console.log('task0')
   setTimeout(resolve, 1000)
 })
 
-parallel(
+wk.parallel(
   'task0',
   'task0',
   'task0',

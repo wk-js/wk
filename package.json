@@ -13,7 +13,7 @@
     "lol": "github:makemepulse/lol.js#0.0.4",
     "when": "^3.7.8",
     "wk-argv-parser": "github:wk-js/argv-parser",
-    "wk-print": "github:wk-js/print#v0.0.2",
-    "wkno": "../wkno"
+    "wk-print": "github:wk-js/print#0.0.3",
+    "wkno": "github:wk-js/wkno#develop"
   }
 }

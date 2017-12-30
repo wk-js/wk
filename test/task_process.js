@@ -1,6 +1,6 @@
 'use strict'
 
-require('../lib/wk')
+const wk = require('../lib/wk')
 
 wk.taskProcess('hello', 'echo Hello World')
 
