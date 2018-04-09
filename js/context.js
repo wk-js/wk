@@ -38,7 +38,7 @@ class Context {
     }
     task(...args) {
         const parameters = Array.prototype.slice.call(args);
-        let name = 'no_name';
+        let name = undefined;
         let action = undefined;
         let options = undefined;
         parameters.forEach((param) => {
@@ -75,13 +75,19 @@ class Context {
         this.currentNamespace = previous;
         return ns;
     }
-    infos(info) {
+    infos(info, value) {
         switch (info) {
             case "name": {
                 return this.name;
             }
             case "tasks": {
                 return Object.keys(this.Tasks);
+            }
+            case "description": {
+                if (this.Tasks[value]) {
+                    return this.Tasks[value].options.description;
+                }
+                return '';
             }
         }
     }

@@ -30,10 +30,10 @@ function task3( wk, argv ) {
 }
 
 module.exports = function( wk ) {
-  wk.task( 'task0', task0 )
-  wk.task( 'task1', task1 )
-  wk.task( 'task2', task2 )
-  wk.task( 'task3', task3 )
+  wk.task( 'task0', task0, { description: 'task0 description' } )
+  wk.task( 'task1', task1, { description: 'task1 description' } )
+  wk.task( 'task2', task2, { description: 'task2 description' } )
+  wk.task( 'task3', task3, { description: 'task3 description' } )
 
   wk.task( 'task', ( wk ) => {
     return wk

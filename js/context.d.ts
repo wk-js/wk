@@ -21,7 +21,7 @@ export declare class Context {
         namespace: (name: string, closure: Function) => Namespace;
         task: (...args: (string | Function | TaskOptions)[]) => Task;
         store: (store_key: string, value?: any) => any;
-        infos: (info: string) => string | string[] | undefined;
+        infos: (info: string, value?: any) => string | string[] | undefined;
         getContextApi: typeof Context.getContextApi;
     } & {
         resolve: (filename: string) => string;
@@ -38,13 +38,13 @@ export declare class Context {
     store(store_key: string, value?: any): any;
     task(...args: (string | Function | TaskOptions)[]): Task;
     namespace(name: string, closure: Function): Namespace;
-    infos(info: string): string | string[] | undefined;
+    infos(info: string, value?: any): string | string[] | undefined;
     static getContext(name: string): Context;
     static getContextApi(name: string): {
         namespace: (name: string, closure: Function) => Namespace;
         task: (...args: (string | Function | TaskOptions)[]) => Task;
         store: (store_key: string, value?: any) => any;
-        infos: (info: string) => string | string[] | undefined;
+        infos: (info: string, value?: any) => string | string[] | undefined;
         getContextApi: typeof Context.getContextApi;
     } & {
         resolve: (filename: string) => string;

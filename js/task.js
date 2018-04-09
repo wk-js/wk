@@ -11,7 +11,7 @@ class Task {
         this.options = {
             argv: {},
             visible: false,
-            name: 'no_name',
+            name: '_noname',
             concurrency: -1,
             description: ''
         };

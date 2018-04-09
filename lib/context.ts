@@ -64,7 +64,7 @@ export class Context {
   task(...args:(string|Function|TaskOptions)[]) {
     const parameters = Array.prototype.slice.call(args)
 
-    let name: string = 'no_name'
+    let name: string|undefined = undefined
     let action: Function|undefined = undefined
     let options: TaskOptions|undefined = undefined
 
@@ -107,7 +107,7 @@ export class Context {
     return ns
   }
 
-  infos( info:string ) {
+  infos( info:string, value?:any ) {
 
     switch( info ) {
 
@@ -117,6 +117,13 @@ export class Context {
 
       case "tasks": {
         return Object.keys( this.Tasks )
+      }
+
+      case "description": {
+        if (this.Tasks[value as string]) {
+          return this.Tasks[value as string].options.description
+        }
+        return ''
       }
 
     }

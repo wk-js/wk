@@ -7,8 +7,8 @@ import { isGeneratorLike, isGenerator } from './utils/generator';
 
 export interface TaskOptions {
   argv: any,
-  visible: boolean,
-  description: string,
+  visible: boolean,    // TODO: Handle visibility from CLI execution
+  description: string, // TODO: Show description to CLI
   name: string,
   concurrency: number,
   before?: Function,
@@ -22,7 +22,7 @@ export class Task {
   public options: TaskOptions = {
     argv: {},
     visible: false,
-    name: 'no_name',
+    name: '_noname',
     concurrency: -1,
     description: ''
   }
