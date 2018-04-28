@@ -1,23 +1,23 @@
 // Generator task
 function* task0( wk, argv ) {
   const result = yield wk
-  .run('task1')
-  .pipe('task2')
+  .run(`task1`, { mainTaskId: argv.mainTaskId })
+  .pipe('task2', { mainTaskId: argv.mainTaskId })
   .promise
 
-  console.log( 'Execute task0', result )
+  console.log( 'Execute task0', argv.mainTaskId, result )
   return 'task0'
 }
 
 // Synchronous task
 function task1( wk, argv ) {
-  console.log( 'Execute task1', argv.result )
+  console.log( 'Execute task1', argv.mainTaskId, argv.result )
   return 'task1'
 }
 
 // Asynchronous task
 function task2( wk, argv ) {
-  console.log( 'Execute task2', argv.result )
+  console.log( 'Execute task2', argv.mainTaskId, argv.result )
   return new Promise((resolve) => {
     setTimeout(() => resolve('task2'), 2000)
   })
@@ -25,7 +25,7 @@ function task2( wk, argv ) {
 
 // Synchronous task with result from generator
 function task3( wk, argv ) {
-  console.log( 'Execute task3', argv.result )
+  console.log( 'Execute task3', argv.mainTaskId, argv.result )
   return 'task3'
 }
 
@@ -35,10 +35,11 @@ module.exports = function( wk ) {
   wk.task( 'task2', task2, { description: 'task2 description' } )
   wk.task( 'task3', task3, { description: 'task3 description' } )
 
-  wk.task( 'task', ( wk ) => {
+  wk.task( 'task', ( wk, argv ) => {
+    console.log( 'Execute task ', argv.mainTaskId, argv.result )
     return wk
-    .run( 'task0' )
-    .pipe( 'task3' )
+    .run( 'task0', { mainTaskId: argv.mainTaskId } )
+    .pipe( 'task3', { mainTaskId: argv.mainTaskId } )
     .promise
   })
 }

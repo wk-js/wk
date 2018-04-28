@@ -37,14 +37,15 @@ class TaskRunner {
             throw new Error(`Task "${nameOrTask}" does not exists.`);
         }
         t.argv = object_1.merge({}, t.argv, argv);
-        const promise = t.task.execute(argv);
+        const promise = t.task.execute(t.argv);
         return this.promiseApi(promise);
     }
     pipe(promise) {
         return (nameOrTask, argv) => {
             const p = promise.then((result) => {
+                argv = object_1.merge({}, argv || {}, { result: result });
                 return this
-                    .run(nameOrTask, { result: result })
+                    .run(nameOrTask, argv)
                     .promise;
             });
             return this.promiseApi(p);

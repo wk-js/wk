@@ -49,15 +49,16 @@ export class TaskRunner {
 
     t.argv = merge( {}, t.argv, argv )
 
-    const promise = t.task.execute( argv )
+    const promise = t.task.execute( t.argv )
     return this.promiseApi( promise )
   }
 
   pipe( promise:When.Promise<any> ) {
     return ( nameOrTask:string, argv?:any ) => {
       const p = promise.then((result:any) => {
+        argv = merge({}, argv || {}, { result: result })
         return this
-        .run(nameOrTask, { result: result })
+        .run(nameOrTask, argv)
         .promise
       })
 
