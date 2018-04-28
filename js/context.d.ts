@@ -23,6 +23,7 @@ export declare class Context {
         store: (store_key: string, value?: any) => any;
         infos: (info: string, value?: any) => string | string[] | undefined;
         getContextApi: typeof Context.getContextApi;
+        createContext: typeof Context.createContext;
     } & {
         resolve: (filename: string) => string;
         require: (filename: string) => any;
@@ -46,6 +47,7 @@ export declare class Context {
         store: (store_key: string, value?: any) => any;
         infos: (info: string, value?: any) => string | string[] | undefined;
         getContextApi: typeof Context.getContextApi;
+        createContext: typeof Context.createContext;
     } & {
         resolve: (filename: string) => string;
         require: (filename: string) => any;
@@ -58,4 +60,5 @@ export declare class Context {
         serie: (...names: (string | Task)[]) => When.Promise<any[]>;
         parallel: (...names: (string | Task)[]) => When.Promise<any>;
     };
+    static createContext(name: string): Context;
 }

@@ -27,7 +27,8 @@ class Context {
             task: this.task,
             store: this.store,
             infos: this.infos,
-            getContextApi: Context.getContextApi
+            getContextApi: Context.getContextApi,
+            createContext: Context.createContext
         }, this.importer.api(), this.taskRunner.api());
     }
     store(store_key, value) {
@@ -99,6 +100,12 @@ class Context {
     }
     static getContextApi(name) {
         return Context.getContext(name).api();
+    }
+    static createContext(name) {
+        if (Context.contexts[name]) {
+            return Context.contexts[name];
+        }
+        return new Context(name);
     }
 }
 Context.contexts = {};

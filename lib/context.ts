@@ -46,7 +46,8 @@ export class Context {
         store:     this.store,
         infos:     this.infos,
 
-        getContextApi: Context.getContextApi
+        getContextApi: Context.getContextApi,
+        createContext: Context.createContext
       },
       this.importer.api(),
       this.taskRunner.api()
@@ -140,6 +141,14 @@ export class Context {
 
   static getContextApi( name:string ) {
     return Context.getContext( name ).api()
+  }
+
+  static createContext( name:string ) {
+    if (Context.contexts[name]) {
+      return Context.contexts[name]
+    }
+
+    return new Context( name )
   }
 
 }
