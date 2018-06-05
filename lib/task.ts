@@ -10,9 +10,7 @@ export interface TaskOptions {
   visible: boolean,    // TODO: Handle visibility from CLI execution
   description: string, // TODO: Show description to CLI
   name: string,
-  concurrency: number,
-  before?: Function,
-  after?: Function
+  concurrency: number
 }
 
 export class Task {
