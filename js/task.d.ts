@@ -7,8 +7,6 @@ export interface TaskOptions {
     description: string;
     name: string;
     concurrency: number;
-    before?: Function;
-    after?: Function;
 }
 export declare class Task {
     private action;
