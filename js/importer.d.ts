@@ -8,8 +8,10 @@ export declare class Importer {
         resolve: (filename: string) => string;
         require: (filename: string) => any;
         load: (filename: string, asNamespace?: boolean) => void;
+        read: (filename: string) => string;
     };
     resolve(filename: string): string;
     require(filename: string): any;
     load(filename: string, asNamespace?: boolean): void;
+    read(filename: string): string;
 }

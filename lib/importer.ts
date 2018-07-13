@@ -24,7 +24,8 @@ export class Importer {
     return {
       resolve: this.resolve,
       require: this.require,
-      load:    this.load
+      load:    this.load,
+      read:    this.read
     }
   }
 
@@ -81,6 +82,14 @@ export class Importer {
     }
 
     contentExports( api )
+  }
+
+  read( filename:string ) {
+    const path:string = this.resolve( filename )
+    return readFileSync(
+      relative(process.cwd(), path),
+      'utf-8'
+    )
   }
 
 }

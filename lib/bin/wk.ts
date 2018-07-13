@@ -3,6 +3,7 @@
 import { Parser } from 'wk-argv-parser';
 import { Context } from "../context";
 import { pad } from "lol/utils/string";
+import { relative, dirname, join } from 'path';
 
 const c = new Context( 'wk' )
 const wk = c.api()
@@ -66,3 +67,24 @@ else {
     return argv.join(' ')
   }))
 }
+
+// Test file execution
+// const file = wk.read( 'test/rapido.js' ).split(/\n/g)
+
+// file.forEach(function(line) {
+//   const args = line.split(' ')
+//   const action = args.shift()
+
+//   if (action === 'load') {
+//     wk.load( join(dirname('test/rapido.js'), args.join(' ')) )
+//   }
+
+//   if (action === 'run') {
+//     const tasks = args.join(' ')
+//     tasks.split('&&')
+//     tasks.split('&')
+//     // wk.run( args.join(' ') )
+//   }
+
+// })
+// return

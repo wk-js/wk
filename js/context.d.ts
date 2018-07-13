@@ -28,6 +28,7 @@ export declare class Context {
         resolve: (filename: string) => string;
         require: (filename: string) => any;
         load: (filename: string, asNamespace?: boolean) => void;
+        read: (filename: string) => string;
     } & {
         run: (nameOrTask: string | Task, argv?: any) => any & {
             promise: When.Promise<any>;
@@ -52,6 +53,7 @@ export declare class Context {
         resolve: (filename: string) => string;
         require: (filename: string) => any;
         load: (filename: string, asNamespace?: boolean) => void;
+        read: (filename: string) => string;
     } & {
         run: (nameOrTask: string | Task, argv?: any) => any & {
             promise: When.Promise<any>;

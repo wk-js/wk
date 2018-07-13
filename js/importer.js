@@ -20,7 +20,8 @@ class Importer {
         return {
             resolve: this.resolve,
             require: this.require,
-            load: this.load
+            load: this.load,
+            read: this.read
         };
     }
     resolve(filename) {
@@ -60,6 +61,10 @@ class Importer {
             return;
         }
         contentExports(api);
+    }
+    read(filename) {
+        const path = this.resolve(filename);
+        return fs_2.readFileSync(path_1.relative(process.cwd(), path), 'utf-8');
     }
 }
 exports.Importer = Importer;
