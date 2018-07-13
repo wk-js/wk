@@ -27,16 +27,14 @@ if (params.help) {
 }
 
 // Load files
-else if (!!params.file) {
-  if (Array.isArray(params.file)) {
-    params.file.forEach((file:string) => wk.load( file ))
-  } else if (typeof params.file === 'string') {
-    wk.load( params.file as string )
-  }
+else if (Array.isArray(params.file)) {
+  params.file.forEach((file:string) => wk.load( file ))
+} else if (typeof params.file === 'string') {
+  wk.load( params.file as string )
 }
 
 // List tasks
-else if (params.tasks) {
+if (params.tasks) {
   (function() {
     let length = 0
     const tasks = (wk.infos( 'tasks' ) as string[])
@@ -68,4 +66,3 @@ else {
     return argv.join(' ')
   }))
 }
-

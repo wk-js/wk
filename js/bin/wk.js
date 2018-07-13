@@ -18,15 +18,14 @@ if (params.help) {
     const packageJSON = require(process.cwd() + '/package.json');
     console.log(`wk v${packageJSON.version}` + command.get('help').description);
 }
-else if (!!params.file) {
-    if (Array.isArray(params.file)) {
-        params.file.forEach((file) => wk.load(file));
-    }
-    else if (typeof params.file === 'string') {
-        wk.load(params.file);
-    }
+else if (Array.isArray(params.file)) {
+    params.file.forEach((file) => wk.load(file));
 }
-else if (params.tasks) {
+else if (typeof params.file === 'string') {
+    wk.load(params.file);
+}
+// List tasks
+if (params.tasks) {
     (function () {
         let length = 0;
         const tasks = wk.infos('tasks')
