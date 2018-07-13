@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "",
   "main": "index.js",
+  "bin": "js/bin/wk.js",
   "scripts": {
     "start": "tsc --watch",
     "compile": "tsc"
