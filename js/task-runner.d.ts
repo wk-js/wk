@@ -56,6 +56,6 @@ export declare class TaskRunner {
     };
     serie(...names: (string | Task)[]): When.Promise<any[]>;
     parallel(...names: (string | Task)[]): When.Promise<any>;
-    private _resolve(names);
-    private _resolveTask(nameOrTask);
+    private _resolve;
+    private _resolveTask;
 }

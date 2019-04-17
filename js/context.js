@@ -10,8 +10,7 @@ class Context {
     constructor(name) {
         this.name = name;
         this.Tasks = {};
-        this.stores = {};
-        function_1.bind(this, 'task', 'namespace', 'store', 'infos');
+        function_1.bind(this, 'task', 'namespace', 'infos');
         if (!this.name) {
             this.name = crypto_1.createHash('md5').update(Date.now() + '').digest('hex');
         }
@@ -25,23 +24,16 @@ class Context {
         return Object.assign({
             namespace: this.namespace,
             task: this.task,
-            store: this.store,
             infos: this.infos,
             getContextApi: Context.getContextApi,
             createContext: Context.createContext
         }, this.importer.api(), this.taskRunner.api());
     }
-    store(store_key, value) {
-        if (typeof value !== 'undefined') {
-            this.stores[store_key] = value;
-        }
-        return this.stores[store_key];
-    }
     task(...args) {
         const parameters = Array.prototype.slice.call(args);
-        let name = undefined;
-        let action = undefined;
-        let options = undefined;
+        let name;
+        let action;
+        let options;
         parameters.forEach((param) => {
             if (typeof param === 'string') {
                 name = param;
@@ -55,6 +47,9 @@ class Context {
         });
         if (!action) {
             throw new Error('Cannot create a task without action.');
+        }
+        if (!name) {
+            name = action.name;
         }
         // create task
         return new task_1.Task(this, action, name, options);

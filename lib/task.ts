@@ -1,7 +1,7 @@
 import { merge, clone } from 'lol/utils/object';
 import { Namespace } from './namespace';
 import { Context } from './context';
-import { promise, isPromiseLike, reduce } from 'when';
+import { promise, isPromiseLike } from 'when';
 import { createHash } from 'crypto';
 import { isGeneratorLike, isGenerator } from './utils/generator';
 
@@ -57,17 +57,6 @@ export class Task {
     return task
   }
 
-  api( mainTaskId:string ) {
-    const api = this.context.api()
-
-    return merge(api, {
-      mainTaskId: mainTaskId,
-      data: (value?:any) => {
-        return this.context.store( mainTaskId, value )
-      }
-    })
-  }
-
   execute( argv?:any, hooks:boolean = false ) {
     return promise<any>((resolve, reject) => {
       this._pool.push({ resolve, reject, argv, hooks })
@@ -111,15 +100,6 @@ export class Task {
     // Set ARGV
     argv = merge( {}, this.options.argv, argv || {} )
 
-    const mainTaskId = createHash('md5').update(Date.now()+Math.random()+'').digest('hex')
-
-    // Set mainTaskId
-    if (!argv.mainTaskId) {
-      argv = argv || {}
-      argv.mainTaskId = mainTaskId
-      this.context.store( mainTaskId, {} )
-    }
-
     // Set task path
     const path = this.getPath()
 
@@ -129,14 +109,13 @@ export class Task {
       argv._ = [ path ]
     }
 
-    return { mainTaskId, argv }
+    return { argv }
   }
 
   private _execute( argv?:any ) {
     const params = this._prepare( argv )
-    const mainTaskId = params.argv.mainTaskId
 
-    let value = this.action( this.api( mainTaskId ), params.argv )
+    let value = this.action( this.context.api(), params.argv )
 
     // Generator case
     if ( isGenerator(this.action) && isGeneratorLike( value ) ) {
@@ -192,7 +171,7 @@ export class Task {
   }
 
   _clean( params:any ) {
-    delete this.context.stores[params.id]
+    // delete this.context.stores[params.id]
   }
 
 }

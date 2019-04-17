@@ -4,7 +4,7 @@ import { Task, TaskOptions } from './task';
 import { TaskRunner } from './task-runner';
 import { Importer } from './importer';
 export declare class Context {
-    name: string | undefined;
+    name?: string | undefined;
     static contexts: {
         [key: string]: Context;
     };
@@ -13,14 +13,10 @@ export declare class Context {
     taskRunner: TaskRunner;
     currentNamespace: Namespace;
     importer: Importer;
-    stores: {
-        [key: string]: any;
-    };
     constructor(name?: string | undefined);
     api(): {
         namespace: (name: string, closure: Function) => Namespace;
         task: (...args: (string | Function | TaskOptions)[]) => Task;
-        store: (store_key: string, value?: any) => any;
         infos: (info: string, value?: any) => string | string[] | undefined;
         getContextApi: typeof Context.getContextApi;
         createContext: typeof Context.createContext;
@@ -37,7 +33,6 @@ export declare class Context {
         serie: (...names: (string | Task)[]) => When.Promise<any[]>;
         parallel: (...names: (string | Task)[]) => When.Promise<any>;
     };
-    store(store_key: string, value?: any): any;
     task(...args: (string | Function | TaskOptions)[]): Task;
     namespace(name: string, closure: Function): Namespace;
     infos(info: string, value?: any): string | string[] | undefined;
@@ -45,7 +40,6 @@ export declare class Context {
     static getContextApi(name: string): {
         namespace: (name: string, closure: Function) => Namespace;
         task: (...args: (string | Function | TaskOptions)[]) => Task;
-        store: (store_key: string, value?: any) => any;
         infos: (info: string, value?: any) => string | string[] | undefined;
         getContextApi: typeof Context.getContextApi;
         createContext: typeof Context.createContext;

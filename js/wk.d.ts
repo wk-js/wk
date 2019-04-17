@@ -1,13 +1,22 @@
+/// <reference types="when" />
 import { Context } from "./context";
-import { Task } from "./task";
-import { TaskRunner } from "./task-runner";
-import { Namespace } from "./namespace";
-import { Importer } from "./importer";
-declare const _default: {
-    Context: typeof Context;
-    Task: typeof Task;
-    TaskRunner: typeof TaskRunner;
-    Namespace: typeof Namespace;
-    Importer: typeof Importer;
+declare const wk: {
+    namespace: (name: string, closure: Function) => import("./namespace").Namespace;
+    task: (...args: (string | Function | import("./task").TaskOptions)[]) => import("./task").Task;
+    infos: (info: string, value?: any) => string | string[] | undefined;
+    getContextApi: typeof Context.getContextApi;
+    createContext: typeof Context.createContext;
+} & {
+    resolve: (filename: string) => string;
+    require: (filename: string) => any;
+    load: (filename: string, asNamespace?: boolean) => void;
+    read: (filename: string) => string;
+} & {
+    run: (nameOrTask: string | import("./task").Task, argv?: any) => any & {
+        promise: When.Promise<any>;
+        pipe: (nameOrTask: string, argv?: any) => any & any;
+    };
+    serie: (...names: (string | import("./task").Task)[]) => When.Promise<any[]>;
+    parallel: (...names: (string | import("./task").Task)[]) => When.Promise<any>;
 };
-export default _default;
+export default wk;

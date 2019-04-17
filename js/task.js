@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const object_1 = require("lol/utils/object");
 const namespace_1 = require("./namespace");
 const when_1 = require("when");
-const crypto_1 = require("crypto");
 const generator_1 = require("./utils/generator");
 class Task {
     constructor(context, action, name, options) {
@@ -35,15 +34,6 @@ class Task {
         const task = new Task(this.context, this.action, this.options.name);
         task.options = object_1.clone(this.options);
         return task;
-    }
-    api(mainTaskId) {
-        const api = this.context.api();
-        return object_1.merge(api, {
-            mainTaskId: mainTaskId,
-            data: (value) => {
-                return this.context.store(mainTaskId, value);
-            }
-        });
     }
     execute(argv, hooks = false) {
         return when_1.promise((resolve, reject) => {
@@ -80,13 +70,6 @@ class Task {
     _prepare(argv) {
         // Set ARGV
         argv = object_1.merge({}, this.options.argv, argv || {});
-        const mainTaskId = crypto_1.createHash('md5').update(Date.now() + Math.random() + '').digest('hex');
-        // Set mainTaskId
-        if (!argv.mainTaskId) {
-            argv = argv || {};
-            argv.mainTaskId = mainTaskId;
-            this.context.store(mainTaskId, {});
-        }
         // Set task path
         const path = this.getPath();
         if (Array.isArray(argv._) && argv._[0] !== path) {
@@ -95,12 +78,11 @@ class Task {
         else {
             argv._ = [path];
         }
-        return { mainTaskId, argv };
+        return { argv };
     }
     _execute(argv) {
         const params = this._prepare(argv);
-        const mainTaskId = params.argv.mainTaskId;
-        let value = this.action(this.api(mainTaskId), params.argv);
+        let value = this.action(this.context.api(), params.argv);
         // Generator case
         if (generator_1.isGenerator(this.action) && generator_1.isGeneratorLike(value)) {
             const generator = value;
@@ -120,9 +102,11 @@ class Task {
             });
             value.then(() => this._clean(params));
         }
+        // Promise case
         else if (when_1.isPromiseLike(value)) {
             value.then(() => this._clean(params));
         }
+        // Synchronous case
         else {
             this._clean(params);
         }
@@ -139,7 +123,7 @@ class Task {
         task.resolve(value);
     }
     _clean(params) {
-        delete this.context.stores[params.id];
+        // delete this.context.stores[params.id]
     }
 }
 Task._id = 0;

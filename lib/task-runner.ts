@@ -1,9 +1,9 @@
 import { Context } from "./context";
 import { Task } from "./task";
-import { merge, clone } from "lol/utils/object";
+import { merge } from "lol/utils/object";
 import { Parser } from 'wk-argv-parser';
 import { bind } from "lol/utils/function";
-import { reduce, resolve } from "when";
+import { reduce } from "when";
 import { map } from './utils/concurrent';
 
 interface TaskRunnerObject {

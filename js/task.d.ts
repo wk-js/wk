@@ -18,7 +18,6 @@ export declare class Task {
     constructor(context: Context, action: Function, name?: string, options?: TaskOptions);
     readonly context: Context;
     clone(): Task;
-    api(mainTaskId: string): any;
     execute(argv?: any, hooks?: boolean): When.Promise<any>;
     getPath(): string;
     /**
@@ -35,8 +34,8 @@ export declare class Task {
      * @memberof Task
      */
     unlink(): void;
-    private _prepare(argv?);
-    private _execute(argv?);
-    private _next();
+    private _prepare;
+    private _execute;
+    private _next;
     _clean(params: any): void;
 }

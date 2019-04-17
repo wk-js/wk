@@ -3,7 +3,7 @@ import { Context } from './context';
 export declare class Namespace {
     name: string;
     context: Context;
-    parent: Namespace | undefined;
+    parent?: Namespace | undefined;
     children: Record<string, Namespace>;
     tasks: Record<string, Task>;
     /**

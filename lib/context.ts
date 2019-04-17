@@ -19,10 +19,8 @@ export class Context {
 
   public importer: Importer
 
-  public stores: { [key:string]: any } = {}
-
   constructor(public name?:string) {
-    bind( this, 'task', 'namespace', 'store', 'infos' )
+    bind( this, 'task', 'namespace', 'infos' )
 
     if (!this.name) {
       this.name = createHash('md5').update(Date.now()+'').digest('hex')
@@ -43,7 +41,6 @@ export class Context {
       {
         namespace: this.namespace,
         task:      this.task,
-        store:     this.store,
         infos:     this.infos,
 
         getContextApi: Context.getContextApi,
@@ -54,20 +51,12 @@ export class Context {
     )
   }
 
-  store( store_key:string, value?:any ) {
-    if (typeof value !== 'undefined') {
-      this.stores[store_key] = value
-    }
-
-    return this.stores[store_key]
-  }
-
   task(...args:(string|Function|TaskOptions)[]) {
     const parameters = Array.prototype.slice.call(args)
 
-    let name: string|undefined = undefined
-    let action: Function|undefined = undefined
-    let options: TaskOptions|undefined = undefined
+    let name: string | undefined
+    let action: Function | undefined
+    let options: TaskOptions | undefined
 
     parameters.forEach((param: string | Function | TaskOptions) => {
       if (typeof param === 'string') {
@@ -81,6 +70,10 @@ export class Context {
 
     if (!action) {
       throw new Error( 'Cannot create a task without action.' )
+    }
+
+    if (!name) {
+      name = action.name
     }
 
     // create task

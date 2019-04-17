@@ -18,6 +18,7 @@ if (params.help) {
     const packageJSON = require(process.cwd() + '/package.json');
     console.log(`wk v${packageJSON.version}` + command.get('help').description);
 }
+// Load files
 else if (Array.isArray(params.file)) {
     params.file.forEach((file) => wk.load(file));
 }
@@ -46,6 +47,7 @@ if (params.tasks) {
         console.log(tasks.join('\n'));
     })();
 }
+// Execute tasks
 else {
     wk.serie(...params._.map(function (task) {
         let argv = process.argv.slice(2);
